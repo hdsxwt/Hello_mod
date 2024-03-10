@@ -27,7 +27,7 @@ displayName="Hello mod" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile= "./png/headPng.png" #optional
+logoFile= "headPng.png" #optional
 # A text field displayed in the mod UI
 # A png that is base on the resources
 credits="Minecraft & Mojang" #optional
