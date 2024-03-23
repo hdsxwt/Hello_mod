@@ -4,8 +4,10 @@ package hdsxwt.github.hello_mod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -45,73 +47,70 @@ public class Main {
         print(player, text);
     }
 
-    @SubscribeEvent
-    public static void LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        Player player = event.getEntity();
-        Level level = player.level;
-        String text = "A LeftClickBlock event happen from" + player.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        print(player, text);
+//    @SubscribeEvent
+//    public static void LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+//        Player player = event.getEntity();
+//        Level level = player.level;
+//        String text = "A LeftClickBlock event happen from" + player.getName() +
+//                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
+//        print(player, text);
+//
+//    }
 
-    }
+//    @SubscribeEvent
+//    public static void LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+//        Player player = event.getEntity();
+//        Level level = player.level;
+//        String text = "A LeftClickEmpty event happen from" + player.getName() +
+//                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
+//        print(player, text);
+//    }
+//
+//    @SubscribeEvent
+//    public static void RightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+//        Player player = event.getEntity();
+//        Level level = player.level;
+//        String text = "A RightClickBlock event happen from" + player.getName() +
+//                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
+//        print(player, text);
+//    }
+
+//    @SubscribeEvent
+//    public static void RightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+//        Player player = event.getEntity();
+//        Level level = player.level;
+//        String text = "A RightClickEmpty event happen from" + player.getName() +
+//                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
+//        print(player, text);
+//    }
+
+//    @SubscribeEvent
+//    public static void RightClickItem(PlayerInteractEvent.RightClickItem event) {
+//        Player player = event.getEntity();
+//        Level level = player.level;
+//        String text = "A RightClickItem event happen from" + player.getName() +
+//                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
+//        player.sendSystemMessage(Component.nullToEmpty(text));
+//        if (level.isClientSide) {
+//            Item item = event.getItemStack().getItem();
+//            Item[] swords = {Items.WOODEN_SWORD, Items.DIAMOND_SWORD, Items.GOLDEN_SWORD, Items.IRON_SWORD, Items.STONE_SWORD,Items.NETHERITE_SWORD};
+//            if (ArrayUtils.contains(swords, item)) {
+//                print(player, "Why are you taking that thing?");
+//            }
+//        }
+//    }
 
     @SubscribeEvent
-    public static void LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
-        Player player = event.getEntity();
-        Level level = player.level;
-        String text = "A LeftClickEmpty event happen from" + player.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        print(player, text);
-    }
-
-    @SubscribeEvent
-    public static void RightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        Player player = event.getEntity();
-        Level level = player.level;
-        String text = "A RightClickBlock event happen from" + player.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        print(player, text);
-    }
-
-    @SubscribeEvent
-    public static void RightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
-        Player player = event.getEntity();
-        Level level = player.level;
-        String text = "A RightClickEmpty event happen from" + player.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        print(player, text);
-    }
-
-    @SubscribeEvent
-    public static void RightClickItem(PlayerInteractEvent.RightClickItem event) {
-        Player player = event.getEntity();
-        Level level = player.level;
-        String text = "A RightClickItem event happen from" + player.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        player.sendSystemMessage(Component.nullToEmpty(text));
-        if (level.isClientSide) {
-            Item item = event.getItemStack().getItem();
-            Item[] swords = {Items.WOODEN_SWORD, Items.DIAMOND_SWORD, Items.GOLDEN_SWORD, Items.IRON_SWORD, Items.STONE_SWORD,Items.NETHERITE_SWORD};
-            if (ArrayUtils.contains(swords, item)) {
-                print(player, "Why are you taking that thing?");
-            }
+    public static void EntityInteract(PlayerInteractEvent.EntityInteract event) {
+        Entity InteractTarget = event.getTarget();
+        if (InteractTarget instanceof Minecart) {
+            // Cannot unRide because passengers have not ridden yet.
+            event.setCanceled(true);
+            print(event.getEntity(), "Haha");
+            /* This can prevent user from getting in the cart.
+               Should be useful when implementing features related to damage carts.
+             */
         }
     }
 
-    @SubscribeEvent
-    public static void jump(LivingEvent.LivingJumpEvent event) {
-        LivingEntity livingEntity = event.getEntity();
-        Level level = livingEntity.level;
-        String text = "A jump event happen from" + livingEntity.getName() +
-                " (" + (level.isClientSide ? "CLIENT" : "SERVER") + ").";
-        print(livingEntity, text);
-    }
 }
-/*
-
-PlayerInteractEvent.LeftClickBlock
-PlayerInteractEvent.LeftClickEmpty
-PlayerInteractEvent.RightClickBlock
-PlayerInteractEvent.RightClickEmpty
-
- */
